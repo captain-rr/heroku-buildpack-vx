@@ -13,12 +13,10 @@ export_env_dir() {
   acceptlist_regex=${2:-''}
   target_file=$3
   denylist_regex=${4:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  echo 'editing $target_file with RE $acceptlist_regex'
   if [ -d "$env_dir" ]; then
-    for e in $(ls $env_dir); do
-	  echo 'Append %s=%s' "$e" "$(cat $env_dir/$e)"
-      echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
-      echo "$e=$(cat $env_dir/$e)" > "$target_file"
-      :
+    for e in $(ls $env_dir | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex"); do
+	  echo "$e=$(cat $env_dir/$e)" > "$target_file"
     done
   fi
 }
