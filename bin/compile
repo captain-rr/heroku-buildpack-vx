@@ -8,6 +8,8 @@ folders_to_copy="actions admin_area api appConfigs cache errors files images inc
 
 ls
 
+howmany() { echo $#; }
+
 export_env_dir() {
   env_dir=$1
   acceptlist_regex=${2:-''}
@@ -15,7 +17,13 @@ export_env_dir() {
   denylist_regex=${4:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   echo "editing $target_file with RE $acceptlist_regex"
   if [ -d "$env_dir" ]; then
-    for e in $(ls $env_dir | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex"); do
+	all_env="$(ls $env_dir)"
+	howmany $all_env
+	whitelisted=$(echo $all_env | tr ' ' '\n' | grep -E "$acceptlist_regex")
+	howmany $whitelisted
+	blacklisted=$(echo $whitelisted | tr ' ' '\n' | grep -qvE "$denylist_regex")
+	howmany $blacklisted
+    for e in $blacklisted; do
 	  echo "append $e=$(cat $env_dir/$e)"
 	  echo "$e=$(cat $env_dir/$e)" > "$target_file"
     done
