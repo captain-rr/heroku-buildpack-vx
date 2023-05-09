@@ -13,9 +13,10 @@ export_env_dir() {
   acceptlist_regex=${2:-''}
   target_file=$3
   denylist_regex=${4:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-  echo 'editing $target_file with RE $acceptlist_regex'
+  echo "editing $target_file with RE $acceptlist_regex"
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex"); do
+	  echo "append $e=$(cat $env_dir/$e)"
 	  echo "$e=$(cat $env_dir/$e)" > "$target_file"
     done
   fi
@@ -34,6 +35,7 @@ for lang in $to_create; do
 	cp -p $build_dir/.htaccess $build_dir/$lang/.htaccess
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
+	echo > $build_dir/$lang/.env
 	export_env_dir "$env_dir" '^${lang^^}_.*' "$build_dir/$lang/.env"
 done
 echo "removing $build_dir/.htaccess"
