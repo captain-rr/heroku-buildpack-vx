@@ -1,11 +1,27 @@
 #!/usr/bin/env bash
 
 build_dir=$1
+env_dir=${3:-}
 
 to_create="he en mx"
 folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
 
 ls
+
+export_env_dir() {
+  env_dir=$1
+  acceptlist_regex=${2:-''}
+  target_file=$3
+  denylist_regex=${4:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+	  echo 'Append %s=%s' "$e" "$(cat $env_dir/$e)"
+      echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
+      echo "$e=$(cat $env_dir/$e)" > "$target_file"
+      :
+    done
+  fi
+}
 
 for lang in $to_create; do
 	echo $lang
@@ -20,10 +36,7 @@ for lang in $to_create; do
 	cp -p $build_dir/.htaccess $build_dir/$lang/.htaccess
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
-	for var in "${!HE_@}"; do
-		echo 'Append %s=%s' "$var" "${!var}"
-		echo '%s=%s\n' "$var" "${!var}" > "$build_dir/$lang/.env"
-	done
+	export_env_dir "$env_dir" '^${lang^^}_.*' "$build_dir/$lang/.env"
 done
 echo "removing $build_dir/.htaccess"
 rm $build_dir/.htaccess
