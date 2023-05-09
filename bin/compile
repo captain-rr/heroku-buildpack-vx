@@ -25,7 +25,7 @@ export_env_dir() {
 	howmany $blacklisted
     for e in $blacklisted; do
 	  echo "append $e=$(cat $env_dir/$e)"
-	  echo "$e=$(cat $env_dir/$e)" > "$target_file"
+	  echo "$e=$(cat $env_dir/$e)" >> "$target_file"
     done
   fi
 }
