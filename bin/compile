@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+to_create="he en mx"
+folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
+
+
+for lang in $to_create; do
+	echo $lang
+	mkdir $build_dir/$lang
+	cp -ps $build_dir/*.php $build_dir/$lang
+	# cp -ps $build_dir/.htaccess $build_dir/$lang
+	for val in $folders_to_copy; do
+		cp -pRs $build_dir/$val $build_dir/$lang
+	done
+	touch $build_dir/$lang/.env
+	for var in "${!HE_@}"; do
+		echo '%s=%s\n' "$var" "${!var}" > $build_dir/$lang/.env
+	done
+done
