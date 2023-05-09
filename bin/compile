@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+build_dir=$1
+
 to_create="he en mx"
 folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
 
