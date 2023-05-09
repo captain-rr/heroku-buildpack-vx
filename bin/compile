@@ -36,7 +36,7 @@ for lang in $to_create; do
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
 	echo > $build_dir/$lang/.env
-	export_env_dir "$env_dir" '^${lang^^}_.*' "$build_dir/$lang/.env"
+	export_env_dir "$env_dir" "^${lang^^}_.*" "$build_dir/$lang/.env"
 done
 echo "removing $build_dir/.htaccess"
 rm $build_dir/.htaccess
