@@ -33,11 +33,11 @@ export_env_dir() {
 for lang in $to_create; do
 	echo $lang
 	mkdir -p $build_dir/$lang
-	cp -ps $build_dir/*.php $build_dir/$lang
+	cp -pl $build_dir/*.php $build_dir/$lang
 	echo 'dirs'
 	# cp -ps $build_dir/.htaccess $build_dir/$lang
 	for val in $folders_to_copy; do
-		cp -pRs $build_dir/$val $build_dir/$lang
+		cp -pRl $build_dir/$val $build_dir/$lang
 	done
 	echo "copying $build_dir/.htaccess to $build_dir/$lang/.htaccess"
 	cp -p $build_dir/.htaccess $build_dir/$lang/.htaccess
