@@ -21,7 +21,7 @@ export_env_dir() {
 	howmany $all_env
 	whitelisted=$(echo $all_env | tr ' ' '\n' | grep -E "$acceptlist_regex")
 	howmany $whitelisted
-	blacklisted=$(echo $whitelisted | tr ' ' '\n' | grep -qvE "$denylist_regex")
+	blacklisted=$(echo $whitelisted | tr ' ' '\n' | grep -vE "$denylist_regex")
 	howmany $blacklisted
     for e in $blacklisted; do
 	  echo "append $e=$(cat $env_dir/$e)"
