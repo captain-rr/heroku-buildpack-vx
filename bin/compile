@@ -6,16 +6,17 @@ to_create="he en mx"
 folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
 
 cd $build_dir
+ls
 
 for lang in $to_create; do
 	echo $lang
-	mkdir -p /app/$lang
-	cp -ps /app/*.php /app/$lang
+	mkdir -p ./$lang
+	cp -ps ./*.php ./$lang
 	# cp -ps $build_dir/.htaccess $build_dir/$lang
 	for val in $folders_to_copy; do
-		cp -pRs /app/$val /app/$lang
+		cp -pRs ./$val ./$lang
 	done
-	touch /app/$lang/.env
+	touch ./$lang/.env
 	for var in "${!HE_@}"; do
 		echo '%s=%s\n' "$var" "${!var}" > "/app/$lang/.env"
 	done
