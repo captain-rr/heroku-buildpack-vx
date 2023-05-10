@@ -4,7 +4,7 @@ build_dir=$1
 env_dir=${3:-}
 
 to_create="he en mx"
-folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
+folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles vendor web_app web_app_public"
 
 ls
 
@@ -44,7 +44,6 @@ for lang in $to_create; do
 	ht_injection=$(cat $env_dir/${lang^^}_HT_INJECTION)
 	ht_injection2=$(cat $env_dir/${lang^^}_HT_INJECTION2)
 	new_ht_content="${htaccess/\#INJECT_HERE#/"$ht_injection"}" 
-	echo $new_ht_content
 	echo "${new_ht_content/\#INJECT_HERE_2#/"$ht_injection2"}" > $build_dir/$lang/.htaccess
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
