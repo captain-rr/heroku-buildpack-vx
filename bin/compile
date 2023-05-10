@@ -30,6 +30,7 @@ export_env_dir() {
   fi
 }
 
+htaccess=$(cat $build_dir/.htaccess)
 for lang in $to_create; do
 	echo $lang
 	mkdir -p $build_dir/$lang
@@ -40,7 +41,8 @@ for lang in $to_create; do
 		cp -pRl $build_dir/$val $build_dir/$lang
 	done
 	echo "copying $build_dir/.htaccess to $build_dir/$lang/.htaccess"
-	cp -p $build_dir/.htaccess $build_dir/$lang/.htaccess
+	ht_injection=$(cat $env_dir/${lang^^}_HT_INJECTION)
+	echo "${htaccess/#INJECT_HERE/"$ht_injection"}" > $build_dir/$lang/.htaccess
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
 	echo > $build_dir/$lang/.env
