@@ -4,7 +4,7 @@ build_dir=$1
 env_dir=${3:-}
 
 to_create="he en mx"
-folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles vendor web_app web_app_public"
+folders_to_copy="actions admin_area api appConfigs cache errors files images includes js partners player plugins styles web_app web_app_public"
 
 ls
 
