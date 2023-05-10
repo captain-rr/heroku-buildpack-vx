@@ -14,7 +14,8 @@ export_env_dir() {
   env_dir=$1
   acceptlist_regex=${2:-''}
   target_file=$3
-  denylist_regex=${4:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  sanitize=$4
+  denylist_regex=${5:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   echo "editing $target_file with RE $acceptlist_regex"
   if [ -d "$env_dir" ]; then
 	all_env="$(ls $env_dir)"
@@ -25,7 +26,7 @@ export_env_dir() {
 	howmany $blacklisted
     for e in $blacklisted; do
 	  echo "append $e=$(cat $env_dir/$e)"
-	  echo "$e=$(cat $env_dir/$e)" >> "$target_file"
+	  echo "${e/$sanitize/}=$(cat $env_dir/$e)" >> "$target_file"
     done
   fi
 }
@@ -48,7 +49,7 @@ for lang in $to_create; do
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
 	echo > $build_dir/$lang/.env
-	export_env_dir "$env_dir" "^${lang^^}_.*" "$build_dir/$lang/.env"
+	export_env_dir "$env_dir" "^${lang^^}_.*" "$build_dir/$lang/.env" "${lang^^}_"
 done
 echo "removing $build_dir/.htaccess"
 rm $build_dir/.htaccess
