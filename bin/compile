@@ -43,8 +43,9 @@ for lang in $to_create; do
 	echo "copying $build_dir/.htaccess to $build_dir/$lang/.htaccess"
 	ht_injection=$(cat $env_dir/${lang^^}_HT_INJECTION)
 	ht_injection2=$(cat $env_dir/${lang^^}_HT_INJECTION2)
-	new_ht_content="${htaccess/\#INJECT_HERE/"$ht_injection"}" 
-	new_ht_content="${new_ht_content/\#INJECT_HERE_2/"$ht_injection2"}" > $build_dir/$lang/.htaccess
+	new_ht_content="${htaccess/\#INJECT_HERE#/"$ht_injection"}" 
+	echo $new_ht_content
+	echo "${new_ht_content/\#INJECT_HERE_2#/"$ht_injection2"}" > $build_dir/$lang/.htaccess
 	echo "making $build_dir/$lang/.env"
 	touch $build_dir/$lang/.env
 	echo > $build_dir/$lang/.env
