@@ -31,7 +31,7 @@ for lang in $to_create; do
 	echo $lang
 	mkdir -p $build_dir/$lang
 	for php_file in $build_dir/*.php; do
-		ln -s "../$(basename $php_file)" "$build_dir/$lang/$php_file"
+		ln -s "../$(basename $php_file)" "$build_dir/$lang/$(basename $php_file)"
 	done
 	#cp -ps $build_dir/*.php $build_dir/$lang
 	echo 'dirs'
