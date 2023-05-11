@@ -30,10 +30,10 @@ htaccess=$(cat $build_dir/.htaccess)
 for lang in $to_create; do
 	echo $lang
 	mkdir -p $build_dir/$lang
-	for php_file in $build_dir/*.php; do
-		ln -s "../$(basename $php_file)" "$build_dir/$lang/$(basename $php_file)"
-	done
-	#cp -ps $build_dir/*.php $build_dir/$lang
+#	for php_file in $build_dir/*.php; do
+#		ln -s "../$(basename $php_file)" "$build_dir/$lang/$(basename $php_file)"
+#	done
+	cp -pl $build_dir/*.php $build_dir/$lang
 	echo 'dirs'
 	# cp -ps $build_dir/.htaccess $build_dir/$lang
 	for val in $folders_to_copy; do
