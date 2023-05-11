@@ -30,11 +30,14 @@ htaccess=$(cat $build_dir/.htaccess)
 for lang in $to_create; do
 	echo $lang
 	mkdir -p $build_dir/$lang
-	cp -ps $build_dir/*.php $build_dir/$lang
+	for php_file in $build_dir/*.php; do
+		ln -s "/app/$php_file" "$build_dir/$lang/$php_file"
+	done
+	#cp -ps $build_dir/*.php $build_dir/$lang
 	echo 'dirs'
 	# cp -ps $build_dir/.htaccess $build_dir/$lang
 	for val in $folders_to_copy; do
-		cp -psR $build_dir/$val $build_dir/$lang
+		cp -plR $build_dir/$val $build_dir/$lang
 	done
 	echo "copying $build_dir/.htaccess to $build_dir/$lang/.htaccess"
 	ht_injection=$(cat $env_dir/${lang^^}_HT_INJECTION)
